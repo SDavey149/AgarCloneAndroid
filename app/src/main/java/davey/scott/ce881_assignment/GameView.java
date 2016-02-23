@@ -43,8 +43,6 @@ public class GameView extends View{
         controls.setGestureDetector(gestureDetector);
         setOnTouchListener(controls);
         setOnClickListener(controls);
-
-
     }
 
     public void setModel(World model) {
