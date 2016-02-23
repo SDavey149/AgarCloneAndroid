@@ -1,0 +1,11 @@
+<resources>
+    <!-- buttons -->
+    <string name="play_now_button_text">Play Now</string>
+    <string name="custom_game_button_text">Custom Game</string>
+    <string name="leaderboard_button_text">Leaderboard</string>
+    <string name="settings_button_text">Settings</string>
+
+
+    <!-- textview -->
+    <string name="choose_character_text">Choose Shape</string>
+</resources>

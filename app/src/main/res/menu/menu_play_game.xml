@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="davey.scott.ce881_assignment.PlayGameActivity">
+    <item android:id="@+id/menu_pause" android:title="@string/menu_pause"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/menu_reset" android:title="@string/menu_reset"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>

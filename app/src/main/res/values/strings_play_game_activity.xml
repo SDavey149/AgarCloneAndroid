@@ -1,0 +1,7 @@
+<resources>
+    <string name="menu_pause">Pause</string>
+    <string name="menu_resume">Resume</string>
+
+    <string name="menu_reset">Reset</string>
+
+</resources>
