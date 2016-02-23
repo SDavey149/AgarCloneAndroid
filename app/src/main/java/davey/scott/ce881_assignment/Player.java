@@ -13,41 +13,55 @@ import java.io.Serializable;
 public class Player extends GameObject {
 
     private int mass;
-    private int speed;
+    private double speed;
+    private int baseSpeed;
+    private static double E_RESTITUTION = 0.9;
+
+    Render render;
 
     public Player(Vector2D pos) {
         super(pos, new Vector2D(0,0));
         mass = 30; //starting mass
-        speed = 150; //this is just a placeholder, speed will be dynamic in future based on mass
+        speed = 1; //this is just a placeholder, speed will be dynamic in future based on mass
+        baseSpeed = 150;
+        render = new PlayerRender(this);
     }
 
     public void update(double delta) {
         Vector2D copy = new Vector2D(vel);
+        copy.mult(speed);
         copy.mult(delta);
         pos.add(copy);
+        if (speed > 1) {
+            speed *= E_RESTITUTION;
+        } else {
+            speed = 1;
+        }
     }
 
-    @Override
-    public void draw(Canvas g, float screenX, float screenY) {
-        Paint p = new Paint();
-        p.setAntiAlias(true);
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(Color.BLACK);
-        g.drawCircle(screenX, screenY, mass, p);
-        p.setColor(Color.WHITE);
-        String massString = "" + mass;
-        p.setTextSize(28);
-        float textWidth = p.measureText(massString, 0, massString.length());
-        g.drawText("" + mass, screenX - textWidth / 2f, screenY - (p.ascent() + p.descent()) / 2f, p);
+    public Render getRender() {
+        return render;
     }
 
     public void setDirection(Vector2D direction) {
-        direction.mult(speed);
+        direction.mult(baseSpeed);
         vel.set(direction);
     }
 
     public void setVelocity(Vector2D vel) {
         this.vel = vel;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+
+    public void dash() {
+        if (mass > 30) {
+            this.speed = 10;
+        }
+
     }
 
     public int getRadius() {

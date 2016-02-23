@@ -20,6 +20,8 @@ public class GameView extends View{
     private GameControls controls;
     private GestureDetector gestureDetector;
     public static double DT = 20/1000.0;
+    private int viewHeight;
+    private int viewWidth;
 
 
     public GameView(Context context) {
@@ -43,6 +45,8 @@ public class GameView extends View{
         controls.setGestureDetector(gestureDetector);
         setOnTouchListener(controls);
         setOnClickListener(controls);
+        viewHeight = getHeight();
+        viewWidth = getWidth();
     }
 
     public void setModel(World model) {
@@ -58,17 +62,17 @@ public class GameView extends View{
         float maxX= (float)(center.x + getWidth() /2.0);
         float minY = (float)(center.y - getHeight() /2.0);
         float maxY = (float)(center.y + getHeight() /2.0);
-        Player player = worldModel.getPlayer();
-        player.draw(g, getWidth() / 2.0f, getHeight() / 2.0f);
         synchronized (worldModel) {
             for (GameObject object : worldModel.getObjects()) {
                 if (worldModel.objectInRegion(object, minX, maxX, minY, maxY)) {
-                    object.draw(g, (float)(object.getPosition().x-minX),
+                    object.getRender().draw(g, (float) (object.getPosition().x - minX),
                             (float)(object.getPosition().y-minY));
                 }
 
             }
         }
+        Player player = worldModel.getPlayer();
+        player.getRender().draw(g, getWidth() / 2.0f, getHeight() / 2.0f);
         float offsetX = (float)(worldModel.worldWidth-center.x + player.getRadius());
         float offsetY = (float)(worldModel.worldHeight-center.y + player.getRadius());
         //drawBoundaries(g, minX, maxX, minY, maxY, offsetX, offsetY);

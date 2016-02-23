@@ -69,7 +69,7 @@ public class GameControls implements
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        System.out.println("flung");
+        world.getPlayer().dash();
         return false;
     }
 }

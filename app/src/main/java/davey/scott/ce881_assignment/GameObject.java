@@ -28,5 +28,5 @@ public abstract class GameObject implements Serializable{
 
     public abstract void update(double delta);
 
-    public abstract void draw(Canvas g, float screenX, float screenY);
+    public abstract Render getRender();
 }

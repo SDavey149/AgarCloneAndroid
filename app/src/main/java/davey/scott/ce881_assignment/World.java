@@ -50,7 +50,7 @@ public class World implements Serializable {
 
     public void addRandomParticles(int amount) {
         for (int i = 0; i < amount; i++) {
-            spawnFood();
+            spawnFood(objects);
         }
     }
 
@@ -63,8 +63,8 @@ public class World implements Serializable {
         return false;
     }
 
-    public void spawnFood() {
-        objects.add(FoodParticle.randomParticle(worldWidth, worldHeight));
+    public void spawnFood(List<GameObject> list) {
+        list.add(FoodParticle.randomParticle(worldWidth, worldHeight));
     }
 
     public void update(double delta) {
@@ -85,7 +85,7 @@ public class World implements Serializable {
         playerWallCheck();
 
         for (int i = 0; i < foodSpawns; i++) {
-            spawnFood();
+            spawnFood(active);
         }
         //clear current objects
         synchronized (this) {

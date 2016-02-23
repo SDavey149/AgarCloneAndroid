@@ -12,15 +12,12 @@ import java.util.Random;
  */
 public class FoodParticle extends GameObject{
 
-    public static int RADIUS = 10;
+    private Render render;
     private static Random randomGen = new Random();
-    private static int[] AVAILABLE_COLORS = {Color.BLACK, Color.BLUE,
-    Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
-    int color;
 
     public FoodParticle(Vector2D pos) {
         super(pos, new Vector2D(0,0));
-        color = AVAILABLE_COLORS[randomGen.nextInt(AVAILABLE_COLORS.length)];
+        render = new FoodParticleRender(this);
     }
 
     public static FoodParticle randomParticle(int maxX, int maxY) {
@@ -32,12 +29,8 @@ public class FoodParticle extends GameObject{
         //do nothing for now in prototype
     }
 
-    @Override
-    public void draw(Canvas g, float screenX, float screenY) {
-        Paint p = new Paint();
-        p.setAntiAlias(true);
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(color);
-        g.drawCircle(screenX, screenY, RADIUS, p);
+    public Render getRender() {
+        return render;
     }
+
 }
