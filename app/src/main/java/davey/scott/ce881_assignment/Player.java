@@ -17,6 +17,7 @@ public class Player extends GameObject {
     private double speed;
     private int baseSpeed;
     private static double E_RESTITUTION = 0.9;
+    public static final int CELL_CREATION_MASS = 15;
 
 
     public Player(World world, Vector2D pos) {
@@ -57,7 +58,20 @@ public class Player extends GameObject {
     public void dash() {
         if (mass > 30) {
             this.speed = 10;
+            Vector2D cellVel = new Vector2D(vel);
+            cellVel.mult(-1);
+            Vector2D direction = new Vector2D(cellVel);
+            direction.normalise();
+            direction.mult(mass + 1);
+            direction.add(pos); //cell position
+            cellVel.mult(0.05);
+
+            Cell cell = new Cell(new Vector2D(direction), new Vector2D(cellVel), CELL_CREATION_MASS,
+                    Color.BLUE);
+            mass -= CELL_CREATION_MASS;
+            world.addGameObject(cell);
         }
+
 
     }
 

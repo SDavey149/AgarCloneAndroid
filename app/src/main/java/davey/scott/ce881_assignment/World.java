@@ -74,12 +74,14 @@ public class World implements Serializable {
         for (GameObject obj : objects) {
             obj.update(delta);
             if (player.collidesWith(obj)) {
-                player.addMass(1);
                 obj.isActive = false;
-                if (obj instanceof FoodParticle)
+                if (obj instanceof FoodParticle) {
+                    player.addMass(1);
                     foodSpawns++;
-                else if (obj instanceof Cell)
-                    System.out.println("hi");
+                }
+                else if (obj instanceof Cell) {
+                    player.addMass(((Cell) obj).getMass());
+                }
 
             }
             if (obj.isActive) {

@@ -2,4 +2,7 @@
     <string name="app_name">CE881_Assignment</string>
 
     <string name="title_activity_play_game">Playing Game</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
