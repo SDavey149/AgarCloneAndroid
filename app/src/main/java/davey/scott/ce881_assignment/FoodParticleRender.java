@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class FoodParticleRender implements Render, Serializable{
 
-    int RADIUS = 4;
+    int RADIUS = 8;
     private static Random randomGen = new Random();
     private static int[] AVAILABLE_COLORS = {Color.BLACK, Color.BLUE,
             Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};

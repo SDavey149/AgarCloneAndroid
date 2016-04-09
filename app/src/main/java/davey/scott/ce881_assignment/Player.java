@@ -57,14 +57,14 @@ public class Player extends GameObject {
 
     public void dash() {
         if (mass > 30) {
-            this.speed = 10;
+            this.speed = 6;
             Vector2D cellVel = new Vector2D(vel);
             cellVel.mult(-1);
             Vector2D direction = new Vector2D(cellVel);
             direction.normalise();
             direction.mult(mass + 1);
             direction.add(pos); //cell position
-            cellVel.mult(0.05);
+            cellVel.mult(0.08);
 
             Cell cell = new Cell(new Vector2D(direction), new Vector2D(cellVel), CELL_CREATION_MASS,
                     Color.BLUE);
