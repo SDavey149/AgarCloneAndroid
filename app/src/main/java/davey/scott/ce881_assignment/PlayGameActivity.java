@@ -1,5 +1,6 @@
 package davey.scott.ce881_assignment;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
-public class PlayGameActivity extends AppCompatActivity {
+public class PlayGameActivity extends Activity {
 
     World model;
     GameView view;

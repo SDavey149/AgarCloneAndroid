@@ -12,7 +12,6 @@ import java.util.Random;
  */
 public class FoodParticle extends GameObject{
 
-    private Render render;
     private static Random randomGen = new Random();
 
     public FoodParticle(Vector2D pos) {
@@ -27,10 +26,6 @@ public class FoodParticle extends GameObject{
     @Override
     public void update(double delta) {
         //do nothing for now in prototype
-    }
-
-    public Render getRender() {
-        return render;
     }
 
 }

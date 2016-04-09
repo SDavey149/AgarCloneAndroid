@@ -11,6 +11,7 @@ public abstract class GameObject implements Serializable{
     protected Vector2D pos;
     protected Vector2D vel;
     protected boolean isActive;
+    protected Render render;
 
     public GameObject(Vector2D pos, Vector2D vel) {
         this.pos = pos;
@@ -28,5 +29,7 @@ public abstract class GameObject implements Serializable{
 
     public abstract void update(double delta);
 
-    public abstract Render getRender();
+    public Render getRender() {
+        return render;
+    }
 }

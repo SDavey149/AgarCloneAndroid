@@ -18,7 +18,8 @@
         </activity>
         <activity
             android:name=".PlayGameActivity"
-            android:label="@string/title_activity_play_game" >
+            android:label="@string/title_activity_play_game"
+            android:theme="@android:style/Theme.NoTitleBar">
         </activity>
     </application>
 

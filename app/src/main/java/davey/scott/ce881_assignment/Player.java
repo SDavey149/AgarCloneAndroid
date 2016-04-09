@@ -12,15 +12,16 @@ import java.io.Serializable;
  */
 public class Player extends GameObject {
 
+    private World world;
     private int mass;
     private double speed;
     private int baseSpeed;
     private static double E_RESTITUTION = 0.9;
 
-    Render render;
 
-    public Player(Vector2D pos) {
+    public Player(World world, Vector2D pos) {
         super(pos, new Vector2D(0,0));
+        this.world = world;
         mass = 30; //starting mass
         speed = 1; //this is just a placeholder, speed will be dynamic in future based on mass
         baseSpeed = 150;
@@ -37,10 +38,6 @@ public class Player extends GameObject {
         } else {
             speed = 1;
         }
-    }
-
-    public Render getRender() {
-        return render;
     }
 
     public void setDirection(Vector2D direction) {

@@ -1,11 +1,13 @@
 package davey.scott.ce881_assignment;
 
+import java.io.Serializable;
+
 /**
  * NOTICE!!!
  * Vector2D class written by Norbert Volker, supplied as part of CE218
  *
  */
-public class Vector2D {
+public class Vector2D implements Serializable{
 
     // fields
     public double x, y;

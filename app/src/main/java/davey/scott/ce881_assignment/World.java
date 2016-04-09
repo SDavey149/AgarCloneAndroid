@@ -16,14 +16,14 @@ public class World implements Serializable {
 
     public World(int sizeX, int sizeY) {
         objects = new ArrayList<>();
-        player = new Player(new Vector2D(1000,1000));
+        player = new Player(this, new Vector2D(sizeX/2,sizeY/2));
         worldHeight = sizeY;
         worldWidth = sizeX;
     }
 
     public void reset() {
         objects = new ArrayList<>();
-        player = new Player(new Vector2D(1000,1000));
+        player = new Player(this, new Vector2D(worldWidth/2,worldHeight/2));
     }
 
     public List<GameObject> getObjects() {
@@ -76,7 +76,11 @@ public class World implements Serializable {
             if (player.collidesWith(obj)) {
                 player.addMass(1);
                 obj.isActive = false;
-                foodSpawns++;
+                if (obj instanceof FoodParticle)
+                    foodSpawns++;
+                else if (obj instanceof Cell)
+                    System.out.println("hi");
+
             }
             if (obj.isActive) {
                 active.add(obj);

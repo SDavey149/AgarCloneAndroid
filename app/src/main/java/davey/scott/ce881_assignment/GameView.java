@@ -57,11 +57,13 @@ public class GameView extends View{
     @Override
     public void draw(Canvas g) {
         super.draw(g);
+        float scale = 2.0f;
         Vector2D center = worldModel.getPlayer().getPosition();
         float minX = (float)(center.x - getWidth() /2.0);
         float maxX= (float)(center.x + getWidth() /2.0);
         float minY = (float)(center.y - getHeight() /2.0);
         float maxY = (float)(center.y + getHeight() /2.0);
+
         synchronized (worldModel) {
             for (GameObject object : worldModel.getObjects()) {
                 if (worldModel.objectInRegion(object, minX, maxX, minY, maxY)) {
