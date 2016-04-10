@@ -1,11 +1,14 @@
 package davey.scott.ce881_assignment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -15,14 +18,13 @@ import android.view.View;
 /**
  * Created by Scott Davey on 15/02/2016.
  */
-public class GameView extends View{
+public class GameView extends View {
     World worldModel;
-    private GameControls controls;
-    private GestureDetector gestureDetector;
-    public static double DT = 20/1000.0;
+    public static int DELAY = 20;
+    public static double DT = DELAY/1000.0;
     private int viewHeight;
     private int viewWidth;
-
+    private boolean touchControls;
 
     public GameView(Context context) {
         super(context);
@@ -40,24 +42,30 @@ public class GameView extends View{
     }
 
     private void setup(Context context) {
-        controls = new GameControls(this, worldModel);
-        gestureDetector = new GestureDetector(context, controls);
-        controls.setGestureDetector(gestureDetector);
-        setOnTouchListener(controls);
-        setOnClickListener(controls);
+        touchControls = true;
         viewHeight = getHeight();
         viewWidth = getWidth();
     }
 
     public void setModel(World model) {
         worldModel = model;
-        controls.world = worldModel;
     }
+
+    public void setTouchControls(boolean touch) {
+        touchControls = touch;
+    }
+
+    public boolean isTouchNavigationEnabled() {
+        return touchControls;
+    }
+
+
 
     @Override
     public void draw(Canvas g) {
         super.draw(g);
-        float scale = 2.0f;
+
+
         Vector2D center = worldModel.getPlayer().getPosition();
         float minX = (float)(center.x - getWidth() /2.0);
         float maxX= (float)(center.x + getWidth() /2.0);
@@ -80,26 +88,6 @@ public class GameView extends View{
         //drawBoundaries(g, minX, maxX, minY, maxY, offsetX, offsetY);
 
 
-
     }
 
-    private void drawBoundaries(Canvas g, float minX, float maxX, float minY, float maxY,
-                                float offsetX, float offsetY) {
-        //TODO - needs fixing, not working properly at all, use new solution maybe
-        Paint p = new Paint();
-        p.setAntiAlias(true);
-        p.setColor(Color.BLACK);
-        float midWidth = getWidth()/2f;
-        float midHeight = getHeight()/2f;
-        if (maxX > worldModel.worldWidth) {
-            g.drawLine(midWidth + offsetX, 0, midWidth + offsetX, maxY, p);
-        } else if (minX < worldModel.worldWidth) {
-            g.drawLine(worldModel.worldWidth-offsetX, 0, worldModel.worldWidth-offsetX, maxY, p);
-        }
-        if (maxY > worldModel.worldHeight) {
-            g.drawLine(0, midHeight + offsetY, maxX, midHeight + offsetY, p);
-        } else if (minY < worldModel.worldHeight) {
-            g.drawLine(0, worldModel.worldHeight-offsetY, maxX, worldModel.worldHeight-offsetY, p);
-        }
-    }
 }

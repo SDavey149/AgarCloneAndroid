@@ -1,6 +1,7 @@
 package davey.scott.ce881_assignment;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void leaderBoardClick(View v) {
-        Toast toast = Toast.makeText(this, "Not complete", Toast.LENGTH_SHORT);
-        toast.show();
+        Intent intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(intent);
     }
 
     public void settingsClick(View v) {

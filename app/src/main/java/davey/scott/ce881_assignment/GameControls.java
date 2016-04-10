@@ -9,7 +9,7 @@ import android.view.View;
  */
 public class GameControls implements
         View.OnClickListener, View.OnTouchListener,
-        GestureDetector.OnGestureListener {
+        GestureDetector.OnGestureListener, Controller {
 
     GameView view;
     World world;
@@ -31,13 +31,15 @@ public class GameControls implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (view.isTouchNavigationEnabled()) {
+            float curX = event.getX();
+            float curY = event.getY();
+            Vector2D direction = new Vector2D(curX-view.getWidth()/2.0,
+                    curY-view.getHeight()/2.0);
+            direction.normalise();
+            world.getPlayer().setDirection(direction);
+        }
         detector.onTouchEvent(event);
-        float curX = event.getX();
-        float curY = event.getY();
-        Vector2D direction = new Vector2D(curX-view.getWidth()/2.0,
-                curY-view.getHeight()/2.0);
-        direction.normalise();
-        world.getPlayer().setDirection(direction);
         return false;
     }
 

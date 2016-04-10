@@ -18,6 +18,8 @@ public class Player extends GameObject {
     private int baseSpeed;
     private static double E_RESTITUTION = 0.9;
     public static final int CELL_CREATION_MASS = 15;
+    private boolean dash;
+    private boolean absorbed;
 
 
     public Player(World world, Vector2D pos) {
@@ -27,6 +29,7 @@ public class Player extends GameObject {
         speed = 1; //this is just a placeholder, speed will be dynamic in future based on mass
         baseSpeed = 150;
         render = new PlayerRender(this);
+        dash = false;
     }
 
     public void update(double delta) {
@@ -38,6 +41,24 @@ public class Player extends GameObject {
             speed *= E_RESTITUTION;
         } else {
             speed = 1;
+        }
+        if (dash) {
+            if (mass > 30) {
+                this.speed = 6;
+                Vector2D cellVel = new Vector2D(vel);
+                cellVel.mult(-1);
+                Vector2D direction = new Vector2D(cellVel);
+                direction.normalise();
+                direction.mult(mass + 1);
+                direction.add(pos); //cell position
+                cellVel.mult(0.08);
+
+                Cell cell = new Cell(new Vector2D(direction), new Vector2D(cellVel), CELL_CREATION_MASS,
+                        Color.BLUE);
+                mass -= CELL_CREATION_MASS;
+                world.addGameObject(cell);
+            }
+            dash = false;
         }
     }
 
@@ -56,23 +77,7 @@ public class Player extends GameObject {
 
 
     public void dash() {
-        if (mass > 30) {
-            this.speed = 6;
-            Vector2D cellVel = new Vector2D(vel);
-            cellVel.mult(-1);
-            Vector2D direction = new Vector2D(cellVel);
-            direction.normalise();
-            direction.mult(mass + 1);
-            direction.add(pos); //cell position
-            cellVel.mult(0.08);
-
-            Cell cell = new Cell(new Vector2D(direction), new Vector2D(cellVel), CELL_CREATION_MASS,
-                    Color.BLUE);
-            mass -= CELL_CREATION_MASS;
-            world.addGameObject(cell);
-        }
-
-
+        dash = true;
     }
 
     public int getRadius() {
@@ -89,5 +94,15 @@ public class Player extends GameObject {
 
     public void addMass(int add) {
         mass+=add;
+    }
+
+    public void absorbed() {
+        absorbed = true;
+    }
+
+    public boolean didAbsorb() {
+        boolean copy = absorbed;
+        absorbed = false;
+        return absorbed;
     }
 }

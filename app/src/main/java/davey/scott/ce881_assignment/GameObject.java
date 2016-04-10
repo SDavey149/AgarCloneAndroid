@@ -23,6 +23,10 @@ public abstract class GameObject implements Serializable{
         return new Vector2D(pos);
     }
 
+    public void setPosition(Vector2D pos) {
+        this.pos = pos;
+    }
+
     public Vector2D getVelocity() {
         return vel;
     }

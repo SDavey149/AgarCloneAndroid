@@ -1,28 +1,36 @@
 package davey.scott.ce881_assignment;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.preference.PreferenceManager;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuItem;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public class PlayGameActivity extends Activity {
 
     World model;
     GameView view;
-    ScheduledExecutorService executor;
+    private GestureDetector gestureDetector;
+    private GameControls controls;
+    private AccelerometerControls accelControls;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    GameLoopThread gameLoop;
+
     public final static String MODEL_KEY = "MODEL_SAVE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
-
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         view = (GameView) findViewById(R.id.game_view);
         setupGame();
 
@@ -30,28 +38,53 @@ public class PlayGameActivity extends Activity {
     }
 
     private void setupGame() {
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.bubblepop_sound);
         model = new World(3000,3000);
         model.addRandomParticles(300);
+        model.setMediaPlayer(mediaPlayer);
         view.setModel(model);
-        //view.postInvalidate();
+        controls = new GameControls(view, model);
+        gestureDetector = new GestureDetector(view.getContext(), controls);
+        controls.setGestureDetector(gestureDetector);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("accelerometer_controls", false) && accelerometer != null) {
+            accelControls = new AccelerometerControls(view, model);
+            view.setTouchControls(false);
+            view.setOnTouchListener(controls);
+            view.setOnClickListener(controls);
+        } else {
+            view.setOnTouchListener(controls);
+            view.setOnClickListener(controls);
+        }
+
+
     }
 
     private void startExecutor() {
-        GameLoopRunnable gameLoop = new GameLoopRunnable(model, view);
-        executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleWithFixedDelay(gameLoop, 20, 20l, TimeUnit.MILLISECONDS);
+        gameLoop = new GameLoopThread(model, view);
+        gameLoop.start();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (accelControls != null)
+            sensorManager.registerListener(accelControls, accelerometer,
+                    SensorManager.SENSOR_DELAY_GAME);
         startExecutor();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        executor.shutdownNow();
+        if (accelControls != null)
+            sensorManager.unregisterListener(accelControls);
+        gameLoop.running = false;
+        try {
+            gameLoop.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -61,32 +94,6 @@ public class PlayGameActivity extends Activity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_pause) {
-            if (!executor.isShutdown()) {
-                item.setTitle(R.string.menu_resume);
-                executor.shutdownNow();
-            } else {
-                item.setTitle(R.string.menu_pause);
-                startExecutor();
-            }
-        }
-
-        else if (id == R.id.menu_reset) {
-            setupGame();
-            executor.shutdownNow();
-            startExecutor();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void onSaveInstanceState(Bundle savedInstance) {
         savedInstance.putSerializable(MODEL_KEY, model);

@@ -1,5 +1,7 @@
 package davey.scott.ce881_assignment;
 
+import android.media.MediaPlayer;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +10,11 @@ import java.util.List;
  * Created by Scott Davey on 15/02/2016.
  */
 public class World implements Serializable {
-    ArrayList<GameObject> objects;
-    Player player;
+    private ArrayList<GameObject> objects;
+    private Player player;
     int worldWidth;
     int worldHeight;
+    private MediaPlayer mediaPlayer;
 
 
     public World(int sizeX, int sizeY) {
@@ -38,6 +41,10 @@ public class World implements Serializable {
             }
         }
         return count;
+    }
+
+    public void setMediaPlayer(MediaPlayer m) {
+        mediaPlayer = m;
     }
 
     public Player getPlayer() {
@@ -78,11 +85,11 @@ public class World implements Serializable {
                 if (obj instanceof FoodParticle) {
                     player.addMass(1);
                     foodSpawns++;
+                    mediaPlayer.start();
                 }
                 else if (obj instanceof Cell) {
                     player.addMass(((Cell) obj).getMass());
                 }
-
             }
             if (obj.isActive) {
                 active.add(obj);
@@ -104,11 +111,23 @@ public class World implements Serializable {
     public void playerWallCheck() {
         Vector2D playerPos = player.getPosition();
         if (playerPos.x <= 0 || playerPos.x >= worldWidth) {
+            Vector2D pos = player.getPosition();
+            if (playerPos.x <= 0)
+                pos.set(1,pos.y);
+            else
+                pos.set(worldWidth-1, pos.y);
+            player.setPosition(pos);
             Vector2D vel = player.getVelocity();
             vel.x *= -1;
             player.setVelocity(vel);
         }
         if (playerPos.y <= 0 || playerPos.y >= worldHeight) {
+            Vector2D pos = player.getPosition();
+            if (playerPos.y <= 0)
+                pos.set(pos.x, 1);
+            else
+                pos.set(pos.x, worldHeight-1);
+            player.setPosition(pos);
             Vector2D vel = player.getVelocity();
             vel.y *= -1;
             player.setVelocity(vel);
