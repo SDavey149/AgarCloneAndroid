@@ -22,6 +22,7 @@ public class World implements Serializable {
         player = new Player(this, new Vector2D(sizeX/2,sizeY/2));
         worldHeight = sizeY;
         worldWidth = sizeX;
+        objects.add(new Player(this,new Vector2D(sizeX/2+70,sizeY/2+70)));
     }
 
     public void reset() {
@@ -81,14 +82,17 @@ public class World implements Serializable {
         for (GameObject obj : objects) {
             obj.update(delta);
             if (player.collidesWith(obj)) {
-                obj.isActive = false;
                 if (obj instanceof FoodParticle) {
+                    obj.isActive = false;
                     player.addMass(1);
                     foodSpawns++;
                     mediaPlayer.start();
                 }
                 else if (obj instanceof Cell) {
+                    obj.isActive = false;
                     player.addMass(((Cell) obj).getMass());
+                } else if (obj instanceof Player) {
+                    //enemy player
                 }
             }
             if (obj.isActive) {

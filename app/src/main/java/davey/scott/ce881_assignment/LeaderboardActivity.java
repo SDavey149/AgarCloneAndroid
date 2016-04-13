@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class LeaderboardActivity extends AppCompatActivity {
 
@@ -15,10 +16,12 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
-        ArrayList<Score> scores = new ArrayList<Score>();
+        /*ArrayList<Score> scores = new ArrayList<Score>();
         scores.add(new Score(1042404234l, 100));
         scores.add(new Score(35235325235l, 200));
-        Collections.sort(scores);
+        Collections.sort(scores);*/
+        LeaderboardHelper helper = new LeaderboardHelper(this);
+        ArrayList<Score> scores = new ArrayList<>(helper.topN(20));
         ScoreAdapter adapter = new ScoreAdapter(this, scores);
         ListView scoreListView = (ListView) findViewById(R.id.scoreList);
         scoreListView.setAdapter(adapter);

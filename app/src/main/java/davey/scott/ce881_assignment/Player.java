@@ -96,6 +96,10 @@ public class Player extends GameObject {
         mass+=add;
     }
 
+    public int getMass() {
+        return mass;
+    }
+
     public void absorbed() {
         absorbed = true;
     }

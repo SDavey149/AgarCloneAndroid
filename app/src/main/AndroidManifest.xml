@@ -19,7 +19,8 @@
         <activity
             android:name=".PlayGameActivity"
             android:label="@string/title_activity_play_game"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SettingsActivity"

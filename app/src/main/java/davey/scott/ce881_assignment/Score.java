@@ -1,8 +1,11 @@
 package davey.scott.ce881_assignment;
 
-import java.text.DateFormat;
+import android.text.format.DateFormat;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Scott Davey on 10/04/2016.
@@ -17,9 +20,11 @@ public class Score implements Comparable {
     }
 
     public String getDate() {
-        DateFormat df = DateFormat.getDateTimeInstance();
-        Date date = new Date(timeStamp);
-        return df.format(date);
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(timeStamp*1000);
+        String date = DateFormat.format("dd-MM-yyyy HH:mm", cal).toString();
+        return date;
+
     }
 
     @Override

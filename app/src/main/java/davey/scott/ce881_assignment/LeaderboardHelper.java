@@ -68,7 +68,6 @@ import java.util.List;
         if (newRowId == -1) {
             System.out.println("An error occurred");
         }
-        System.out.println("inserted row");
 
     }
 

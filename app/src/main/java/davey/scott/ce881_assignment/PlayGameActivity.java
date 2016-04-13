@@ -22,6 +22,7 @@ public class PlayGameActivity extends Activity {
     private SensorManager sensorManager;
     private Sensor accelerometer;
     GameLoopThread gameLoop;
+    LeaderboardHelper helper;
 
     public final static String MODEL_KEY = "MODEL_SAVE";
 
@@ -32,6 +33,7 @@ public class PlayGameActivity extends Activity {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         view = (GameView) findViewById(R.id.game_view);
+        helper = new LeaderboardHelper(this);
         setupGame();
 
 
@@ -85,6 +87,14 @@ public class PlayGameActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        long timestamp = System.currentTimeMillis() / 1000;
+        int score = model.getPlayer().getMass();
+        helper.saveScore(new Score(timestamp, score));
     }
 
     @Override
