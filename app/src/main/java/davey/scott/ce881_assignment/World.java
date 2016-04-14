@@ -22,7 +22,7 @@ public class World implements Serializable {
         player = new Player(this, new Vector2D(sizeX/2,sizeY/2));
         worldHeight = sizeY;
         worldWidth = sizeX;
-        objects.add(new Player(this,new Vector2D(sizeX/2+70,sizeY/2+70)));
+        objects.add(new SmarterEnemy(this,new Vector2D(sizeX/2+70,sizeY/2+70), 50));
     }
 
     public void reset() {
@@ -34,15 +34,6 @@ public class World implements Serializable {
         return objects;
     }
 
-    public int countFood() {
-        int count = 0;
-        for (GameObject obj : objects) {
-            if (obj instanceof FoodParticle) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     public void setMediaPlayer(MediaPlayer m) {
         mediaPlayer = m;
@@ -73,6 +64,39 @@ public class World implements Serializable {
 
     public void spawnFood(List<GameObject> list) {
         list.add(FoodParticle.randomParticle(worldWidth, worldHeight));
+    }
+
+    public Player getClosestPredator(Player from) {
+        double minDistance = Double.MAX_VALUE;
+        Player minObject = null;
+        for (GameObject obj : objects) {
+            if (obj instanceof Player && ((Player) obj).mass > from.mass &&
+                    from.getPosition().dist(obj.getPosition()) < minDistance) {
+                minDistance = from.getPosition().dist(obj.getPosition());
+                minObject = (Player)obj;
+            }
+        }
+
+        //check the player separately
+        Player mainPlayer = getPlayer();
+        if (mainPlayer.mass > from.mass &&
+                from.getPosition().dist(mainPlayer.getPosition()) < minDistance) {
+            minObject = mainPlayer;
+        }
+
+        return minObject;
+    }
+
+    public Player getClosestPrey(Player from) {
+        int minDistance = Integer.MAX_VALUE;
+        Player minObject = null;
+        for (GameObject obj : objects) {
+            if (obj instanceof Player && ((Player) obj).mass < from.mass &&
+                    from.getPosition().dist(obj.getPosition()) < minDistance) {
+                minObject = (Player)obj;
+            }
+        }
+        return minObject;
     }
 
     public void update(double delta) {

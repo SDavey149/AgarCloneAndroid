@@ -42,6 +42,7 @@ public class GameView extends View {
     }
 
     private void setup(Context context) {
+        setKeepScreenOn(true);
         touchControls = true;
         viewHeight = getHeight();
         viewWidth = getWidth();
@@ -74,6 +75,7 @@ public class GameView extends View {
 
         synchronized (worldModel) {
             for (GameObject object : worldModel.getObjects()) {
+                //handle player drawing separate as it's the center
                 if (worldModel.objectInRegion(object, minX, maxX, minY, maxY)) {
                     object.getRender().draw(g, (float) (object.getPosition().x - minX),
                             (float)(object.getPosition().y-minY));
@@ -83,9 +85,6 @@ public class GameView extends View {
         }
         Player player = worldModel.getPlayer();
         player.getRender().draw(g, getWidth() / 2.0f, getHeight() / 2.0f);
-        float offsetX = (float)(worldModel.worldWidth-center.x + player.getRadius());
-        float offsetY = (float)(worldModel.worldHeight-center.y + player.getRadius());
-        //drawBoundaries(g, minX, maxX, minY, maxY, offsetX, offsetY);
 
 
     }

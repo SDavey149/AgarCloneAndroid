@@ -12,14 +12,14 @@ import java.io.Serializable;
  */
 public class Player extends GameObject {
 
-    private World world;
-    private int mass;
-    private double speed;
+    protected World world;
+    protected int mass;
+    protected double speed;
     private int baseSpeed;
     private static double E_RESTITUTION = 0.9;
     public static final int CELL_CREATION_MASS = 15;
-    private boolean dash;
-    private boolean absorbed;
+    protected boolean dash;
+    protected boolean absorbed;
 
 
     public Player(World world, Vector2D pos) {
