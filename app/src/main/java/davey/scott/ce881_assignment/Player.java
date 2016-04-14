@@ -12,8 +12,6 @@ import java.io.Serializable;
  */
 public class Player extends GameObject {
 
-    protected World world;
-    protected int mass;
     protected double speed;
     private int baseSpeed;
     private static double E_RESTITUTION = 0.9;
@@ -23,8 +21,7 @@ public class Player extends GameObject {
 
 
     public Player(World world, Vector2D pos) {
-        super(pos, new Vector2D(0,0));
-        this.world = world;
+        super(world, pos, new Vector2D(0,0));
         mass = 30; //starting mass
         speed = 1; //this is just a placeholder, speed will be dynamic in future based on mass
         baseSpeed = 150;
@@ -53,12 +50,23 @@ public class Player extends GameObject {
                 direction.add(pos); //cell position
                 cellVel.mult(0.08);
 
-                Cell cell = new Cell(new Vector2D(direction), new Vector2D(cellVel), CELL_CREATION_MASS,
+                Cell cell = new Cell(world, new Vector2D(direction), new Vector2D(cellVel), CELL_CREATION_MASS,
                         Color.BLUE);
                 mass -= CELL_CREATION_MASS;
                 world.addGameObject(cell);
             }
             dash = false;
+        }
+    }
+
+    @Override
+    public void collided(GameObject obj) {
+        if (obj.mass > mass) {
+            //im absorbed, nooooo
+            isActive = false;
+        } else if (obj.mass < mass) {
+            //i eat them
+            addMass(obj.mass);
         }
     }
 
@@ -84,14 +92,6 @@ public class Player extends GameObject {
         return mass;
     }
 
-    public boolean collidesWith(GameObject obj) {
-        Vector2D otherPos = obj.getPosition();
-        if (pos.dist(otherPos) < mass) {
-            return true;
-        }
-        return false;
-    }
-
     public void addMass(int add) {
         mass+=add;
     }
@@ -103,6 +103,8 @@ public class Player extends GameObject {
     public void absorbed() {
         absorbed = true;
     }
+
+
 
     public boolean didAbsorb() {
         boolean copy = absorbed;

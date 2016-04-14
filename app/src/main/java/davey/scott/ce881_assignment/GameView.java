@@ -15,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import java.util.Collections;
+
 /**
  * Created by Scott Davey on 15/02/2016.
  */
@@ -65,8 +67,6 @@ public class GameView extends View {
     @Override
     public void draw(Canvas g) {
         super.draw(g);
-
-
         Vector2D center = worldModel.getPlayer().getPosition();
         float minX = (float)(center.x - getWidth() /2.0);
         float maxX= (float)(center.x + getWidth() /2.0);
@@ -76,15 +76,20 @@ public class GameView extends View {
         synchronized (worldModel) {
             for (GameObject object : worldModel.getObjects()) {
                 //handle player drawing separate as it's the center
-                if (worldModel.objectInRegion(object, minX, maxX, minY, maxY)) {
+                if (object instanceof Player && object.equals(worldModel.getPlayer())) {
+                    object.getRender().draw(g, getWidth() / 2.0f, getHeight() / 2.0f);
+                }
+                else if (worldModel.objectInRegion(object, minX, maxX, minY, maxY)) {
                     object.getRender().draw(g, (float) (object.getPosition().x - minX),
                             (float)(object.getPosition().y-minY));
                 }
+            }
 
+            for (FoodParticle f : worldModel.getFood()) {
+                f.getRender().draw(g, (float) (f.getPosition().x - minX),
+                        (float)(f.getPosition().y-minY));
             }
         }
-        Player player = worldModel.getPlayer();
-        player.getRender().draw(g, getWidth() / 2.0f, getHeight() / 2.0f);
 
 
     }

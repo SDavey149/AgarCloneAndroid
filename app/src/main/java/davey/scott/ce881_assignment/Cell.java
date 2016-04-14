@@ -5,11 +5,10 @@ package davey.scott.ce881_assignment;
  */
 public class Cell extends GameObject {
 
-    private int mass;
     private static double e = 0.9;
 
-    public Cell(Vector2D pos, Vector2D vel, int mass, int color) {
-        super(pos, vel);
+    public Cell(World w, Vector2D pos, Vector2D vel, int mass, int color) {
+        super(w, pos, vel);
         this.mass = mass;
         render = new CellRender(this, color);
     }
@@ -23,7 +22,11 @@ public class Cell extends GameObject {
         vel.mult(e);
     }
 
-    public int getMass() {
-        return mass;
+    @Override
+    public void collided(GameObject obj) {
+        if (obj.mass > mass) {
+            //they can eat the cell
+            isActive = false;
+        }
     }
 }

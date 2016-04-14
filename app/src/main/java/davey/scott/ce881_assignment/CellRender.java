@@ -24,9 +24,8 @@ public class CellRender implements Render, Serializable {
 
     @Override
     public void draw(Canvas g, float screenX, float screenY) {
-        int mass = cell.getMass();
         p.setColor(color);
-        g.drawCircle(screenX, screenY, mass, p);
+        g.drawCircle(screenX, screenY, cell.mass, p);
 
         /*p.setColor(Color.WHITE);
         String massString = "" + mass;

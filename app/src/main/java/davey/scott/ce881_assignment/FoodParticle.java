@@ -10,22 +10,32 @@ import java.util.Random;
 /**
  * Created by Scott Davey on 15/02/2016.
  */
-public class FoodParticle extends GameObject{
+public class FoodParticle {
 
     private static Random randomGen = new Random();
 
-    public FoodParticle(Vector2D pos) {
-        super(pos, new Vector2D(0,0));
+    private Vector2D position;
+    private World world;
+    private Render render;
+    protected boolean isActive = true;
+
+    public FoodParticle(World w, Vector2D pos) {
+        world = w;
+        position = pos;
         render = new FoodParticleRender(this);
     }
 
-    public static FoodParticle randomParticle(int maxX, int maxY) {
-        return new FoodParticle(new Vector2D(randomGen.nextInt(maxX), randomGen.nextInt(maxY)));
+    public static FoodParticle randomParticle(World w, int maxX, int maxY) {
+        return new FoodParticle(w, new Vector2D(randomGen.nextInt(maxX), randomGen.nextInt(maxY)));
     }
 
-    @Override
-    public void update(double delta) {
-        //do nothing for now in prototype
+    public Vector2D getPosition() {
+        return position;
     }
+
+    public Render getRender() {
+        return render;
+    }
+
 
 }
