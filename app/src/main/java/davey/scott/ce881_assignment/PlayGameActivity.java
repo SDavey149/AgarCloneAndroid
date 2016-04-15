@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
@@ -13,26 +14,32 @@ import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class PlayGameActivity extends Activity {
 
+
     World model;
     GameView view;
+
     private GestureDetector gestureDetector;
     private GameControls controls;
     private AccelerometerControls accelControls;
     private SensorManager sensorManager;
     private Sensor accelerometer;
     GameLoopThread gameLoop;
-    LeaderboardHelper helper;
+    private LeaderboardHelper helper;
 
-    public final static String MODEL_KEY = "MODEL_SAVE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         view = (GameView) findViewById(R.id.game_view);
@@ -43,10 +50,11 @@ public class PlayGameActivity extends Activity {
     }
 
     private void setupGame() {
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.bubblepop_sound);
-        model = new World(3000,3000);
+        Bundle b = getIntent().getExtras();
+        int color = b.getInt(MainActivity.COLOR_EXTRA, Color.BLACK);
+
+        model = new World(MainActivity.WORLD_SIZE,MainActivity.WORLD_SIZE, color);
         model.addRandomParticles(300);
-        model.setMediaPlayer(mediaPlayer);
         view.setModel(model);
         controls = new GameControls(view, model);
         gestureDetector = new GestureDetector(view.getContext(), controls);

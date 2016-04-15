@@ -16,11 +16,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/choose_character_text"/>
+            android:text="@string/choose_character_text"
+            android:paddingBottom="10dp"/>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
             android:gravity="center">
             <!--Choose Character Scroller -->
             <ImageButton
@@ -60,6 +62,12 @@
                 android:onClick="rightArrowClick"
                 />
         </RelativeLayout>
+
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/character_description"
+            />-->
 
         <Button
             android:layout_width="200dp"

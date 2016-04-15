@@ -1,41 +1,54 @@
 package davey.scott.ce881_assignment;
 
 import android.graphics.Color;
-import android.media.MediaPlayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Scott Davey on 15/02/2016.
  */
 public class World implements Serializable {
+    public static final int DESIRED_AI_COUNT = 20;
+
     private ArrayList<GameObject> objects;
     private ArrayList<GameObject> pending;
     private ArrayList<FoodParticle> food;
     private Player player;
     int worldWidth;
     int worldHeight;
-    private MediaPlayer mediaPlayer;
+    private Random random;
 
-
-    public World(int sizeX, int sizeY) {
+    public World(int sizeX, int sizeY, int playerColor) {
         food = new ArrayList<>();
+        random = new Random();
         worldHeight = sizeY;
         worldWidth = sizeX;
+        player = new Player(this, new Vector2D(worldWidth/2,worldHeight/2),
+                playerColor);
         reset();
 
     }
 
     public void reset() {
+        player.isActive = true;
+        player.getPosition().set(worldWidth/2, worldHeight/2);
+        player.mass = Player.INITIAL_MASS;
         pending = new ArrayList<>();
         objects = new ArrayList<>();
-        player = new Player(this, new Vector2D(worldWidth/2,worldHeight/2), Color.RED);
-        objects.add(new SmarterEnemy(this,new Vector2D(worldHeight/2+70,worldWidth/2+70), 50, Color.BLUE));
         objects.add(player);
-        objects.add(new SpikeBall(this,new Vector2D(worldHeight/2-90,worldWidth/2-90), 20));
+        objects.add(new SpikeBall(this, new Vector2D(worldHeight / 2 - 90, worldWidth / 2 - 90), 20));
+
+        for (int i = 0; i < DESIRED_AI_COUNT; i++) {
+            SmarterEnemy enemy = getNewEnemy();
+            if (!player.collidesWith(enemy)) {
+                objects.add(enemy);
+            }
+
+        }
     }
 
     public List<GameObject> getObjects() {
@@ -44,10 +57,6 @@ public class World implements Serializable {
 
     public List<FoodParticle> getFood() {
         return food;
-    }
-
-    public void setMediaPlayer(MediaPlayer m) {
-        mediaPlayer = m;
     }
 
     public Player getPlayer() {
@@ -60,8 +69,12 @@ public class World implements Serializable {
 
     public void addRandomParticles(int amount) {
         for (int i = 0; i < amount; i++) {
-            food.add(spawnFood());
+            food.add(getFoodParticle());
         }
+    }
+
+    public int getPlayerRank() {
+        return objects.indexOf(player);
     }
 
     public boolean objectInRegion(GameObject object, float minX, float maxX, float minY, float maxY) {
@@ -73,8 +86,38 @@ public class World implements Serializable {
         return false;
     }
 
-    public FoodParticle spawnFood() {
+    public boolean foodInRegion(FoodParticle object, float minX, float maxX, float minY, float maxY) {
+        double posX = object.getPosition().x;
+        double posY = object.getPosition().y;
+        if (posX > minX && posX < maxX && posY > minY && posY < maxY) {
+            return true;
+        }
+        return false;
+    }
+
+    public FoodParticle getFoodParticle() {
         return FoodParticle.randomParticle(this, worldWidth, worldHeight);
+    }
+
+    private int enemyCount() {
+        int count = 0;
+        for (GameObject obj : objects) {
+            if (obj instanceof SmarterEnemy) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public SmarterEnemy getNewEnemy() {
+        int color = FoodParticleRender.AVAILABLE_COLORS
+                [random.nextInt(FoodParticleRender.AVAILABLE_COLORS.length)];
+        return new SmarterEnemy(this,
+                new Vector2D(random.nextInt(worldWidth-30),
+                        random.nextInt(worldHeight-30)),
+                random.nextInt(100),
+                color);
+
     }
 
     public Player getClosestPredator(Player from) {
@@ -92,11 +135,12 @@ public class World implements Serializable {
     }
 
     public GameObject getClosestPrey(Player from) {
-        int minDistance = Integer.MAX_VALUE;
+        double minDistance = Double.MAX_VALUE;
         GameObject minObject = null;
         for (GameObject obj : objects) {
             if ((obj instanceof Player || obj instanceof Cell) && obj.mass < from.mass &&
                     from.getPosition().dist(obj.getPosition()) < minDistance) {
+                minDistance = from.getPosition().dist(obj.getPosition());
                 minObject = obj;
             }
         }
@@ -145,7 +189,14 @@ public class World implements Serializable {
         }
 
         for (int i = 0; i < foodSpawns; i++) {
-            activeFood.add(spawnFood());
+            activeFood.add(getFoodParticle());
+        }
+
+        if (enemyCount() < DESIRED_AI_COUNT) {
+            SmarterEnemy enemy = getNewEnemy();
+            if (!player.collidesWith(enemy)) {
+                pending.add(enemy);
+            }
         }
 
         //clear current objects

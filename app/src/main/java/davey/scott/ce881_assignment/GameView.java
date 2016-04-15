@@ -27,6 +27,7 @@ public class GameView extends View {
     private int viewHeight;
     private int viewWidth;
     private boolean touchControls;
+    public static final int VIEW_BUFFER = 200;
 
     public GameView(Context context) {
         super(context);
@@ -79,15 +80,20 @@ public class GameView extends View {
                 if (object instanceof Player && object.equals(worldModel.getPlayer())) {
                     object.getRender().draw(g, getWidth() / 2.0f, getHeight() / 2.0f);
                 }
-                else if (worldModel.objectInRegion(object, minX, maxX, minY, maxY)) {
+                else if (worldModel.objectInRegion(object, minX-VIEW_BUFFER, maxX+VIEW_BUFFER,
+                        minY-VIEW_BUFFER, maxY+VIEW_BUFFER)) {
                     object.getRender().draw(g, (float) (object.getPosition().x - minX),
                             (float)(object.getPosition().y-minY));
                 }
             }
 
             for (FoodParticle f : worldModel.getFood()) {
-                f.getRender().draw(g, (float) (f.getPosition().x - minX),
-                        (float)(f.getPosition().y-minY));
+                if (worldModel.foodInRegion(f, minX, maxX,
+                        minY, maxY)) {
+                    f.getRender().draw(g, (float) (f.getPosition().x - minX),
+                            (float)(f.getPosition().y-minY));
+                }
+
             }
         }
 

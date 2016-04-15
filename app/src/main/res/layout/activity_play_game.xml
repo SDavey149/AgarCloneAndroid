@@ -3,36 +3,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context="davey.scott.ce881_assignment.PlayGameActivity">
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="mass:10"
-            android:layout_alignParentLeft="true"
-            android:textColor="@android:color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="middle"
-            android:layout_centerHorizontal="true"
-            android:textColor="@android:color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="right"
-            android:layout_alignParentRight="true"
-            android:textColor="@android:color/black"/>
-
-
-
-    </RelativeLayout>
-
-
     <davey.scott.ce881_assignment.GameView
         android:id="@+id/game_view"
         android:layout_width="fill_parent"
