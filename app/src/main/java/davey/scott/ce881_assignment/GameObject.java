@@ -10,7 +10,7 @@ import java.io.Serializable;
 public abstract class GameObject implements Serializable, Comparable {
     protected Vector2D pos;
     protected Vector2D vel;
-    protected boolean isActive;
+    protected boolean isActive = true;
     protected Render render;
     protected int mass;
     protected World world;
@@ -19,7 +19,6 @@ public abstract class GameObject implements Serializable, Comparable {
         this.world = world;
         this.pos = pos;
         this.vel = vel;
-        isActive = true;
     }
 
     public Vector2D getPosition() {
@@ -47,7 +46,8 @@ public abstract class GameObject implements Serializable, Comparable {
     }
 
     public boolean collidesWith(GameObject obj) {
-        if (pos.dist(obj.getPosition()) < mass) {
+        int m = Math.max(obj.mass, mass);
+        if (pos.dist(obj.getPosition()) < m) {
             return true;
         }
         return false;

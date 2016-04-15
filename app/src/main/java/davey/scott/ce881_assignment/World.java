@@ -17,26 +17,24 @@ public class World implements Serializable {
     private Player player;
     int worldWidth;
     int worldHeight;
-    private int playerCount;
     private MediaPlayer mediaPlayer;
 
 
     public World(int sizeX, int sizeY) {
-        objects = new ArrayList<>();
-        pending = new ArrayList<>();
         food = new ArrayList<>();
-        player = new Player(this, new Vector2D(sizeX/2,sizeY/2));
         worldHeight = sizeY;
         worldWidth = sizeX;
-        objects.add(new SmarterEnemy(this,new Vector2D(sizeX/2+70,sizeY/2+70), 50));
-        objects.add(player);
-        playerCount = 2;
+        reset();
+
     }
 
     public void reset() {
+        pending = new ArrayList<>();
         objects = new ArrayList<>();
         player = new Player(this, new Vector2D(worldWidth/2,worldHeight/2));
+        objects.add(new SmarterEnemy(this,new Vector2D(worldHeight/2+70,worldWidth/2+70), 50));
         objects.add(player);
+        objects.add(new SpikeBall(this,new Vector2D(worldHeight/2-90,worldWidth/2-90), 40));
     }
 
     public List<GameObject> getObjects() {
@@ -92,13 +90,13 @@ public class World implements Serializable {
         return minObject;
     }
 
-    public Player getClosestPrey(Player from) {
+    public GameObject getClosestPrey(Player from) {
         int minDistance = Integer.MAX_VALUE;
-        Player minObject = null;
+        GameObject minObject = null;
         for (GameObject obj : objects) {
             if ((obj instanceof Player || obj instanceof Cell) && obj.mass < from.mass &&
                     from.getPosition().dist(obj.getPosition()) < minDistance) {
-                minObject = (Player)obj;
+                minObject = obj;
             }
         }
         return minObject;
@@ -162,6 +160,10 @@ public class World implements Serializable {
             Collections.sort(objects);
         }
 
+    }
+
+    public boolean isGameOver() {
+        return !player.isActive;
     }
 
 

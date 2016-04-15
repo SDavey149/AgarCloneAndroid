@@ -5,16 +5,19 @@ package davey.scott.ce881_assignment;
  */
 public class GameLoopThread extends Thread {
 
+    PlayGameActivity activity;
     World game;
     GameView view;
     private long lastTime = 0;
     boolean running = true;
 
 
-    public GameLoopThread(World game, GameView view) {
+    public GameLoopThread(PlayGameActivity gameActivity) {
         super();
-        this.game = game;
-        this.view = view;
+        this.activity = gameActivity;
+        this.game = gameActivity.model;
+        this.view = gameActivity.view;
+
     }
 
     @Override
@@ -31,6 +34,16 @@ public class GameLoopThread extends Thread {
             try {
                 Thread.sleep(GameView.DELAY);
             } catch (InterruptedException e) {
+            }
+
+            if (game.isGameOver()) {
+                running = false;
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.displayGameOverDialog();
+                    }
+                });
             }
         }
 

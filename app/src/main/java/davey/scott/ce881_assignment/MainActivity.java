@@ -59,11 +59,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /*
     public void customGameClick(View v) {
         Toast toast = Toast.makeText(this, "Not complete", Toast.LENGTH_SHORT);
         toast.show();
     }
-
+*/
     public void leaderBoardClick(View v) {
         Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);

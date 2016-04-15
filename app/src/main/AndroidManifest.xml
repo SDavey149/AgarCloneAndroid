@@ -19,8 +19,8 @@
         <activity
             android:name=".PlayGameActivity"
             android:label="@string/title_activity_play_game"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -29,6 +29,10 @@
         <activity
             android:name=".LeaderboardActivity"
             android:label="@string/title_activity_leaderboard" >
+        </activity>
+        <activity
+            android:name=".CustomGameActivity"
+            android:label="@string/title_activity_custom_game" >
         </activity>
     </application>
 

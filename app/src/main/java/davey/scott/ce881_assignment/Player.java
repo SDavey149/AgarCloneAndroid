@@ -14,30 +14,35 @@ public class Player extends GameObject {
 
     protected double speed;
     private int baseSpeed;
+    private double normalMovementSpeed;
     private static double E_RESTITUTION = 0.9;
     public static final int CELL_CREATION_MASS = 15;
+    public static final int INITIAL_MASS = 30;
+    public static final int BASE_SPEED = 1;
     protected boolean dash;
     protected boolean absorbed;
 
 
     public Player(World world, Vector2D pos) {
         super(world, pos, new Vector2D(0,0));
-        mass = 30; //starting mass
-        speed = 1; //this is just a placeholder, speed will be dynamic in future based on mass
+        mass = INITIAL_MASS; //starting mass
+        speed = BASE_SPEED; //this is just a placeholder, speed will be dynamic in future based on mass
         baseSpeed = 150;
+        normalMovementSpeed = speed;
         render = new PlayerRender(this);
         dash = false;
     }
 
     public void update(double delta) {
+        updateNormalSpeed();
         Vector2D copy = new Vector2D(vel);
         copy.mult(speed);
         copy.mult(delta);
         pos.add(copy);
-        if (speed > 1) {
+        if (speed > normalMovementSpeed) {
             speed *= E_RESTITUTION;
         } else {
-            speed = 1;
+            speed = normalMovementSpeed;
         }
         if (dash) {
             if (mass > 30) {
@@ -59,15 +64,20 @@ public class Player extends GameObject {
         }
     }
 
+    private void updateNormalSpeed() {
+        //max speed based on mass of object
+        normalMovementSpeed = BASE_SPEED*Math.pow(0.994, mass-INITIAL_MASS);
+    }
+
     @Override
     public void collided(GameObject obj) {
         if (obj.mass > mass) {
             //im absorbed, nooooo
             isActive = false;
         } else if (obj.mass < mass) {
-            //i eat them
             addMass(obj.mass);
         }
+
     }
 
     public void setDirection(Vector2D direction) {

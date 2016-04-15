@@ -1,7 +1,10 @@
 package davey.scott.ce881_assignment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -63,7 +66,7 @@ public class PlayGameActivity extends Activity {
     }
 
     private void startExecutor() {
-        gameLoop = new GameLoopThread(model, view);
+        gameLoop = new GameLoopThread(this);
         gameLoop.start();
     }
 
@@ -104,18 +107,31 @@ public class PlayGameActivity extends Activity {
         return true;
     }
 
+    protected void displayGameOverDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setTitle("Game Over");
+        dialog.setMessage("Game over. Want to play again?");
+        dialog.setCancelable(false);
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE,
+                "Play again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        model.reset();
+                        startExecutor();
+                    }
+                });
 
-    public void onSaveInstanceState(Bundle savedInstance) {
-        savedInstance.putSerializable(MODEL_KEY, model);
-        super.onSaveInstanceState(savedInstance);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+                "Main menu", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PlayGameActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
+        dialog.show();
     }
 
-    public void onRestoreInstanceState(Bundle savedInstance) {
-        super.onRestoreInstanceState(savedInstance);
-        model = (World) savedInstance.getSerializable(MODEL_KEY);
-        view.setModel(model);
-        view.postInvalidate();
-    }
 
 }
