@@ -1,5 +1,6 @@
 package davey.scott.ce881_assignment;
 
+import android.graphics.Color;
 import android.media.MediaPlayer;
 
 import java.io.Serializable;
@@ -31,10 +32,10 @@ public class World implements Serializable {
     public void reset() {
         pending = new ArrayList<>();
         objects = new ArrayList<>();
-        player = new Player(this, new Vector2D(worldWidth/2,worldHeight/2));
-        objects.add(new SmarterEnemy(this,new Vector2D(worldHeight/2+70,worldWidth/2+70), 50));
+        player = new Player(this, new Vector2D(worldWidth/2,worldHeight/2), Color.RED);
+        objects.add(new SmarterEnemy(this,new Vector2D(worldHeight/2+70,worldWidth/2+70), 50, Color.BLUE));
         objects.add(player);
-        objects.add(new SpikeBall(this,new Vector2D(worldHeight/2-90,worldWidth/2-90), 40));
+        objects.add(new SpikeBall(this,new Vector2D(worldHeight/2-90,worldWidth/2-90), 20));
     }
 
     public List<GameObject> getObjects() {

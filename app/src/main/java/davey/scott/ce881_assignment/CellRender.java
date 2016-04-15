@@ -13,6 +13,7 @@ public class CellRender implements Render, Serializable {
     Cell cell;
     Paint p;
     int color;
+    public static final int CELL_RADIUS = 15;
 
     public CellRender(Cell cell, int color) {
         this.cell = cell;
@@ -25,7 +26,7 @@ public class CellRender implements Render, Serializable {
     @Override
     public void draw(Canvas g, float screenX, float screenY) {
         p.setColor(color);
-        g.drawCircle(screenX, screenY, cell.mass, p);
+        g.drawCircle(screenX, screenY, CELL_RADIUS, p);
 
         /*p.setColor(Color.WHITE);
         String massString = "" + mass;

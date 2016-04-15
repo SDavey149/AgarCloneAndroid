@@ -18,6 +18,9 @@ public class SpikeBall extends GameObject {
 
     @Override
     public void collided(GameObject obj) {
+        if (obj.mass > mass) {
+            isActive = false;
+        }
 
     }
 }

@@ -10,8 +10,8 @@ public class RandomEnemy extends Enemy {
     Random random;
 
 
-    public RandomEnemy(World world, Vector2D pos) {
-        super(world, pos);
+    public RandomEnemy(World world, Vector2D pos, int color) {
+        super(world, pos, color);
         moveTimeout = 100;
         random = new Random();
     }

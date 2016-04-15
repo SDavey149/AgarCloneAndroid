@@ -24,7 +24,7 @@ public class PlayerRender implements Render, Serializable {
     @Override
     public void draw(Canvas g, float screenX, float screenY) {
         int mass = player.getRadius();
-        p.setColor(Color.BLACK);
+        p.setColor(player.color);
         p.setStyle(Paint.Style.FILL);
         g.drawCircle(screenX, screenY, mass, p);
 
@@ -33,8 +33,5 @@ public class PlayerRender implements Render, Serializable {
         float textWidth = p.measureText(massString, 0, massString.length());
         g.drawText("" + mass, screenX - textWidth / 2f, screenY - (p.ascent() + p.descent()) / 2f, p);
 
-        p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
-        g.drawCircle(screenX, screenY, mass, p);
     }
 }

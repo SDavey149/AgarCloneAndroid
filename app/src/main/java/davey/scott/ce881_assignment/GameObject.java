@@ -3,6 +3,7 @@ package davey.scott.ce881_assignment;
 import android.graphics.Canvas;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Created by Scott Davey on 15/02/2016.
@@ -14,11 +15,13 @@ public abstract class GameObject implements Serializable, Comparable {
     protected Render render;
     protected int mass;
     protected World world;
+    protected Random random;
 
     public GameObject(World world, Vector2D pos, Vector2D vel) {
         this.world = world;
         this.pos = pos;
         this.vel = vel;
+        random = new Random();
     }
 
     public Vector2D getPosition() {
@@ -61,4 +64,8 @@ public abstract class GameObject implements Serializable, Comparable {
     }
 
     public abstract void collided(GameObject obj);
+
+    protected Vector2D getRandomDirection() {
+        return new Vector2D(random.nextGaussian(), random.nextGaussian());
+    }
 }

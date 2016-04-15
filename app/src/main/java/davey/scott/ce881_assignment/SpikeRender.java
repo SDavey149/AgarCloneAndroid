@@ -11,6 +11,7 @@ public class SpikeRender implements Render {
 
     SpikeBall spike;
     Paint p;
+    public static final int SPIKE_RADIUS = 25;
 
     public SpikeRender(SpikeBall spike) {
         this.spike = spike;
@@ -23,7 +24,7 @@ public class SpikeRender implements Render {
     public void draw(Canvas g, float screenX, float screenY) {
         p.setColor(Color.BLACK);
         p.setStyle(Paint.Style.FILL);
-        g.drawCircle(screenX, screenY, spike.mass, p);
+        g.drawCircle(screenX, screenY, SPIKE_RADIUS, p);
 
         p.setColor(Color.WHITE);
         String massString = "SPIKE";
@@ -32,6 +33,6 @@ public class SpikeRender implements Render {
 
         p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.GRAY);
-        g.drawCircle(screenX, screenY, spike.mass, p);
+        g.drawCircle(screenX, screenY, SPIKE_RADIUS, p);
     }
 }

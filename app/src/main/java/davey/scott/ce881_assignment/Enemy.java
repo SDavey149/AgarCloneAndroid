@@ -8,11 +8,9 @@ import java.util.Random;
 public abstract class Enemy extends Player {
 
     public static final int VISION_DISTANCE = 500;
-    protected Random random;
 
-    public Enemy(World world, Vector2D pos) {
-        super(world, pos);
-        random = new Random();
+    public Enemy(World world, Vector2D pos, int color) {
+        super(world, pos, color);
     }
 
     @Override
@@ -60,7 +58,7 @@ public abstract class Enemy extends Player {
     }
 
     protected void moveRandom() {
-        Vector2D direction = new Vector2D(random.nextInt(10)-5, random.nextInt(10)-5);
+        Vector2D direction = getRandomDirection();
         direction.normalise();
         setDirection(direction);
     }

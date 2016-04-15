@@ -11,8 +11,8 @@ public class SmarterEnemy extends Enemy {
     private int reactionSpeed;
     private Random random;
 
-    public SmarterEnemy(World world, Vector2D pos, int reactionSpeed) {
-        super(world, pos);
+    public SmarterEnemy(World world, Vector2D pos, int reactionSpeed, int color) {
+        super(world, pos, color);
         this.reactionSpeed = reactionSpeed;
         moveTimeout = reactionSpeed;
         random = new Random();
@@ -24,7 +24,7 @@ public class SmarterEnemy extends Enemy {
         if (moveTimeout >= reactionSpeed) {
             moveTimeout = 0;
             if (!flee()) {
-                //if we havent fleed, then attack
+                //if we havent fled, then attack
                 if (!attack()) {
                     //if we havent attacked, move at random
                     moveRandom();
