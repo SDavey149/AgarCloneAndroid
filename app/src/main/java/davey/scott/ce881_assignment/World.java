@@ -1,7 +1,5 @@
 package davey.scott.ce881_assignment;
 
-import android.graphics.Color;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,12 +40,18 @@ public class World implements Serializable {
         objects.add(player);
         objects.add(new SpikeBall(this, new Vector2D(worldHeight / 2 - 90, worldWidth / 2 - 90), 20));
 
-        for (int i = 0; i < DESIRED_AI_COUNT; i++) {
-            SmarterEnemy enemy = getNewEnemy();
+        for (int i = 0; i < DESIRED_AI_COUNT/2; i++) {
+            FleeEnemy enemy = getNewFleeEnemy();
             if (!player.collidesWith(enemy)) {
                 objects.add(enemy);
             }
+        }
 
+        for (int i = DESIRED_AI_COUNT/2; i < DESIRED_AI_COUNT; i++) {
+            AttackEnemy enemy = getNewAttackEnemy();
+            if (!player.collidesWith(enemy)) {
+                objects.add(enemy);
+            }
         }
     }
 
@@ -102,22 +106,42 @@ public class World implements Serializable {
     private int enemyCount() {
         int count = 0;
         for (GameObject obj : objects) {
-            if (obj instanceof SmarterEnemy) {
+            if (obj instanceof FleeEnemy) {
                 count++;
             }
         }
         return count;
     }
 
-    public SmarterEnemy getNewEnemy() {
+    public FleeEnemy getNewFleeEnemy() {
         int color = FoodParticleRender.AVAILABLE_COLORS
                 [random.nextInt(FoodParticleRender.AVAILABLE_COLORS.length)];
-        return new SmarterEnemy(this,
+        return new FleeEnemy(this,
                 new Vector2D(random.nextInt(worldWidth-30),
                         random.nextInt(worldHeight-30)),
-                random.nextInt(100),
+                random.nextInt(50),
                 color);
 
+    }
+
+    public AttackEnemy getNewAttackEnemy() {
+        int color = FoodParticleRender.AVAILABLE_COLORS
+                [random.nextInt(FoodParticleRender.AVAILABLE_COLORS.length)];
+        return new AttackEnemy(this,
+                new Vector2D(random.nextInt(worldWidth-30),
+                        random.nextInt(worldHeight-30)),
+                random.nextInt(50),
+                color);
+
+    }
+
+    public Enemy getRandomEnemy() {
+        int n = random.nextInt(2);
+        if (n == 0) {
+            return getNewFleeEnemy();
+        } else {
+            return getNewAttackEnemy();
+        }
     }
 
     public Player getClosestPredator(Player from) {
@@ -193,7 +217,7 @@ public class World implements Serializable {
         }
 
         if (enemyCount() < DESIRED_AI_COUNT) {
-            SmarterEnemy enemy = getNewEnemy();
+            Enemy enemy = getRandomEnemy();
             if (!player.collidesWith(enemy)) {
                 pending.add(enemy);
             }

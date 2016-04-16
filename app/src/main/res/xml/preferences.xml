@@ -5,15 +5,15 @@
             android:defaultValue="false" android:title="Use Accelerometer Controls?"
             android:summaryOff="With accelerometer disabled, touch controls will be used instead."
             android:summaryOn="Accelerometer is enabled. Touch controls can no longer be used."
-            android:key="accelerometer_controls"/>
+            android:key="@string/accelerometer_key"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="Sounds">
+    <!--<PreferenceCategory android:title="Sounds">
         <CheckBoxPreference android:defaultValue="false" android:title="Background Music"
             android:summary="Mute the background music"
             android:key="is_background_music_muted" />
         <CheckBoxPreference android:defaultValue="false" android:title="Game Sounds"
             android:summary="Mute the game sounds"
             android:key="is_game_sound_muted" />
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
 </PreferenceScreen>

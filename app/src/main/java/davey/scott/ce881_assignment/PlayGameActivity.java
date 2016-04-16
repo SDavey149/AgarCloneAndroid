@@ -9,15 +9,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 
 
 public class PlayGameActivity extends Activity {
@@ -49,6 +45,14 @@ public class PlayGameActivity extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        long timestamp = System.currentTimeMillis() / 1000;
+        int score = model.getPlayer().getMass();
+        helper.saveScore(new Score(timestamp, score));
+    }
+
     private void setupGame() {
         Bundle b = getIntent().getExtras();
         int color = b.getInt(MainActivity.COLOR_EXTRA, Color.BLACK);
@@ -60,7 +64,7 @@ public class PlayGameActivity extends Activity {
         gestureDetector = new GestureDetector(view.getContext(), controls);
         controls.setGestureDetector(gestureDetector);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("accelerometer_controls", false) && accelerometer != null) {
+        if (prefs.getBoolean(getString(R.string.accelerometer_key), false) && accelerometer != null) {
             accelControls = new AccelerometerControls(view, model);
             view.setTouchControls(false);
             view.setOnTouchListener(controls);
@@ -103,9 +107,6 @@ public class PlayGameActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-        long timestamp = System.currentTimeMillis() / 1000;
-        int score = model.getPlayer().getMass();
-        helper.saveScore(new Score(timestamp, score));
     }
 
     @Override
@@ -116,6 +117,10 @@ public class PlayGameActivity extends Activity {
     }
 
     protected void displayGameOverDialog() {
+        long timestamp = System.currentTimeMillis() / 1000;
+        int score = model.getPlayer().getMass();
+        helper.saveScore(new Score(timestamp, score));
+
         AlertDialog dialog = new AlertDialog.Builder(this).create();
         dialog.setTitle("Game Over");
         dialog.setMessage("Game over. Want to play again?");

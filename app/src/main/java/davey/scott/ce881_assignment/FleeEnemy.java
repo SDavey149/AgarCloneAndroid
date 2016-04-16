@@ -5,13 +5,12 @@ import java.util.Random;
 /**
  * Created by Scott Davey on 14/04/2016.
  */
-public class SmarterEnemy extends Enemy {
+public class FleeEnemy extends Enemy {
     //ai reaction speed
     int moveTimeout;
-    private int reactionSpeed;
-    private Random random;
+    protected int reactionSpeed;
 
-    public SmarterEnemy(World world, Vector2D pos, int reactionSpeed, int color) {
+    public FleeEnemy(World world, Vector2D pos, int reactionSpeed, int color) {
         super(world, pos, color);
         this.reactionSpeed = reactionSpeed;
         moveTimeout = reactionSpeed;
@@ -31,9 +30,6 @@ public class SmarterEnemy extends Enemy {
                 }
             }
         }
-
-
-
     }
 
 
