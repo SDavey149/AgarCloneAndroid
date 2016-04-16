@@ -139,6 +139,7 @@ public class PlayGameActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(PlayGameActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 });

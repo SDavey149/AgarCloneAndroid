@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     public static String TAG = "MainActivity: ";
     public static final int WORLD_SIZE = 3000;
     public static final String COLOR_EXTRA = "Color";
