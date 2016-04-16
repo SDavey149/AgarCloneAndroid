@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class World implements Serializable {
     public static final int DESIRED_AI_COUNT = 20;
+    public static final int DESIRED_SPIKE_COUNT = 8;
 
     private ArrayList<GameObject> objects;
     private ArrayList<GameObject> pending;
@@ -38,7 +39,14 @@ public class World implements Serializable {
         pending = new ArrayList<>();
         objects = new ArrayList<>();
         objects.add(player);
-        objects.add(new SpikeBall(this, new Vector2D(worldHeight / 2 - 90, worldWidth / 2 - 90), 20));
+
+
+        for (int i =0; i < DESIRED_SPIKE_COUNT; i++) {
+            SpikeBall sb = getNewSpikeBall();
+            if (!player.collidesWith(sb)) {
+                objects.add(getNewSpikeBall());
+            }
+        }
 
         for (int i = 0; i < DESIRED_AI_COUNT/2; i++) {
             FleeEnemy enemy = getNewFleeEnemy();
@@ -106,7 +114,17 @@ public class World implements Serializable {
     private int enemyCount() {
         int count = 0;
         for (GameObject obj : objects) {
-            if (obj instanceof FleeEnemy) {
+            if (obj instanceof Enemy) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int spikeBallCount() {
+        int count = 0;
+        for (GameObject obj : objects) {
+            if (obj instanceof SpikeBall) {
                 count++;
             }
         }
@@ -133,6 +151,11 @@ public class World implements Serializable {
                 random.nextInt(50),
                 color);
 
+    }
+
+    public SpikeBall getNewSpikeBall() {
+        return new SpikeBall(this, new Vector2D(random.nextInt(worldWidth-30),
+                random.nextInt(worldHeight-30)), 20);
     }
 
     public Enemy getRandomEnemy() {
@@ -185,8 +208,7 @@ public class World implements Serializable {
         }
 
         //check the collisions
-        int x;
-        for (x = 0; x < objects.size(); x++) {
+        for (int x = 0; x < objects.size(); x++) {
             GameObject object1 = objects.get(x);
             for (int y = x+1; y < objects.size(); y++) {
                 GameObject object2 = objects.get(y);
@@ -220,6 +242,13 @@ public class World implements Serializable {
             Enemy enemy = getRandomEnemy();
             if (!player.collidesWith(enemy)) {
                 pending.add(enemy);
+            }
+        }
+
+        if (spikeBallCount() < DESIRED_SPIKE_COUNT) {
+            SpikeBall sb = getNewSpikeBall();
+            if (!player.collidesWith(sb)) {
+                pending.add(sb);
             }
         }
 

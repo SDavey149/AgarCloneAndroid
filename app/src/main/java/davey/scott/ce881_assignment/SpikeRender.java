@@ -17,7 +17,7 @@ public class SpikeRender implements Render {
         this.spike = spike;
         p = new Paint();
         p.setAntiAlias(true);
-        p.setTextSize(28);
+        p.setTextSize(30);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SpikeRender implements Render {
         g.drawCircle(screenX, screenY, SPIKE_RADIUS, p);
 
         p.setColor(Color.WHITE);
-        String massString = "SPIKE";
+        String massString = "S";
         float textWidth = p.measureText(massString, 0, massString.length());
         g.drawText(massString, screenX - textWidth / 2f, screenY - (p.ascent() + p.descent()) / 2f, p);
 

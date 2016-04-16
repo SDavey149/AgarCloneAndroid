@@ -1,11 +1,12 @@
 package davey.scott.ce881_assignment;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class CustomGameActivity extends AppCompatActivity {
+public class CustomGameActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

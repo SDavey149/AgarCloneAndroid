@@ -65,7 +65,7 @@ public class PlayGameActivity extends Activity {
         controls.setGestureDetector(gestureDetector);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean(getString(R.string.accelerometer_key), false) && accelerometer != null) {
-            accelControls = new AccelerometerControls(view, model);
+            accelControls = new AccelerometerControls(model);
             view.setTouchControls(false);
             view.setOnTouchListener(controls);
             view.setOnClickListener(controls);

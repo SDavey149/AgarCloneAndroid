@@ -75,6 +75,15 @@ public class GameView extends View {
         float maxY = (float)(center.y + getHeight() /2.0);
 
         synchronized (worldModel) {
+            for (FoodParticle f : worldModel.getFood()) {
+                if (worldModel.foodInRegion(f, minX, maxX,
+                        minY, maxY)) {
+                    f.getRender().draw(g, (float) (f.getPosition().x - minX),
+                            (float)(f.getPosition().y-minY));
+                }
+
+            }
+
             for (GameObject object : worldModel.getObjects()) {
                 //handle player drawing separate as it's the center
                 if (object instanceof Player && object.equals(worldModel.getPlayer())) {
@@ -87,14 +96,6 @@ public class GameView extends View {
                 }
             }
 
-            for (FoodParticle f : worldModel.getFood()) {
-                if (worldModel.foodInRegion(f, minX, maxX,
-                        minY, maxY)) {
-                    f.getRender().draw(g, (float) (f.getPosition().x - minX),
-                            (float)(f.getPosition().y-minY));
-                }
-
-            }
         }
 
 

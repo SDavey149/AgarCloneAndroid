@@ -5,20 +5,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Scott Davey on 12/04/2016.
- */public class LeaderboardHelper extends SQLiteOpenHelper implements LeaderboardDB {
+ * Modified version of the SQLite script used in Lab 7
+ *
+ */
+public class LeaderboardHelper extends SQLiteOpenHelper implements LeaderboardDB {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "leaderboard.db";
     // static int id =
 
-    private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String TABLE_NAME = ScoreDBContract.ScoreEntry.TABLE_NAME;

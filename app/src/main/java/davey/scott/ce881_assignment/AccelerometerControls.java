@@ -9,13 +9,11 @@ import android.hardware.SensorEventListener;
  */
 public class AccelerometerControls implements SensorEventListener, Controller {
 
-    private GameView view;
     private World world;
     private float xStart, yStart;
     public static final double ACCELEROMETER_SENSITIVITY = 0.5;
 
-    public AccelerometerControls(GameView view, World world) {
-        this.view = view;
+    public AccelerometerControls(World world) {
         this.world = world;
         xStart = Float.MAX_VALUE;
         yStart = Float.MAX_VALUE;

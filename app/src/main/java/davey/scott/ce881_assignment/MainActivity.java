@@ -1,5 +1,6 @@
 package davey.scott.ce881_assignment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     public static String TAG = "MainActivity: ";
     public static final int WORLD_SIZE = 3000;
     public static final String COLOR_EXTRA = "Color";

@@ -1,5 +1,6 @@
 package davey.scott.ce881_assignment;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LeaderboardActivity extends AppCompatActivity {
+public class LeaderboardActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
