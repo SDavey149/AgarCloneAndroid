@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Top 10 Scores"
+        android:text="@string/leaderboard_heading"
         android:textSize="20sp"
         android:textColor="@android:color/black"
         android:id="@+id/scoreTitle"/>

@@ -12,6 +12,7 @@ public class AccelerometerControls implements SensorEventListener, Controller {
     private GameView view;
     private World world;
     private float xStart, yStart;
+    public static final double ACCELEROMETER_SENSITIVITY = 0.5;
 
     public AccelerometerControls(GameView view, World world) {
         this.view = view;
@@ -33,7 +34,7 @@ public class AccelerometerControls implements SensorEventListener, Controller {
             float deltaY = y-yStart;
             Vector2D direction = new Vector2D(-deltaX,
                     deltaY);
-            if (direction.mag() > 1) {
+            if (direction.mag() > ACCELEROMETER_SENSITIVITY) {
                 direction.normalise();
                 world.getPlayer().setDirection(direction);
             }
