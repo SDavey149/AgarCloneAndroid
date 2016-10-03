@@ -14,3 +14,17 @@ Controls:
 - Camera zoom: currently it doesn't zoom out as you get larger which becomes a problem when you're massive
 - Graphics: spike balls are just a cell with an 's' in them currently for example
 - Online play: beating bots just doesn't satisfy my sadistic mind like ending the game for a real player does
+
+## Screenshots
+
+![Picture 1](/screenshots/Picture1.png?raw=true)
+
+![Picture 2](/screenshots/Picture2.png?raw=true)
+
+![Picture 3](/screenshots/Picture3.png?raw=true)
+
+![Picture 4](/screenshots/Picture4.png?raw=true)
+
+![Picture 5](/screenshots/Picture5.png?raw=true)
+
+![Picture 6](/screenshots/Picture6.png?raw=true)
